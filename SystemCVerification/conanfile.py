@@ -5,9 +5,9 @@ class SystemcverificationConan(ConanFile):
     name = "SystemCVerification"
     version = "2.0.0a"
     folder = "scv-2.0.0a-20161019"
-    license = "Apache License 2.0"
-    url = "<Package recipe repository url here, for issues about the package>"
-    description = "<Description of Systemcverification here>"
+    license = "Apache 2.0 License"
+    url = "https://github.com/Minres/conan-recipes/blob/master/SystemCVerification"
+    description = "The SystemC Verification (SCV) library provides a common set of APIs that are used as a basis to verification activities with SystemC"
     settings = "os", "compiler", "build_type", "arch"
     options = {"stdcxx":[98,11,14]}
     default_options = "stdcxx=98"

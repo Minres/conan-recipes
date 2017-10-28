@@ -55,3 +55,10 @@ conan test_package SystemCVerification/2.0.0.a@minres/<channel name>  -o SystemC
 ```
 
 where <c++ std variant> is one of 98, 11, or 14
+
+## uploading
+
+Uploading can be done using
+```
+conan upload  <package name>/<package version>@<user name>/<channel> --all -r=<remote name>
+```

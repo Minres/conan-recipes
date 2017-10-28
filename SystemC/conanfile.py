@@ -5,7 +5,7 @@ class SeasocksConan(ConanFile):
     name = "SystemC"
     version = "2.3.2"
     license = "Apache 2.0 License"
-    url = ""
+    url = "https://github.com/Minres/conan-recipes/blob/master/SystemC"
     description = "SystemC is a set of C++ classes and macros which provide an event-driven simulation interface (see also discrete event simulation)."
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False], "stdcxx":[98,11,14]}
