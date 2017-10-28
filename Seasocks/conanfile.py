@@ -25,7 +25,7 @@ include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()''')
 
     def build(self):
-        cmake = CMake(self)
+        cmake = CMake(self, parallel=True)
         self.run('cmake seasocks %s' % cmake.command_line)
         self.run("cmake --build . --target install %s" % cmake.build_config)
 
