@@ -51,7 +51,24 @@ CONAN_USERNAME=<username> CONAN_CHANNEL=<channel name> python build.py
 to build a specific variant run the following command
 
 ```
-conan create . SystemCVerification/2.0.1a@minres/<channel name>  -o stdcxx=<c++ std variant> -s build_type=<build type>
+conan create . SystemCVerification/2.0.1@minres/<channel name>  -o stdcxx=<c++ std variant> -s build_type=<build type>
+```
+
+where <c++ std variant> is one of 98, 11, or 14
+
+## SystemC Configuration, Control and Inspection (CCI) library
+
+download the SystemC CCI distribution from http://www.accellera.org/downloads/standards/systemc and unpack into the SystemC-CCI directory
+
+```
+cd SystemC-CCI
+CONAN_USERNAME=<username> CONAN_CHANNEL=<channel name> python build.py
+```
+
+to build a specific variant run the following command
+
+```
+conan create . SystemC-CCI/0.9.0@minres/<channel name>  -o stdcxx=<c++ std variant> -s build_type=<build type>
 ```
 
 where <c++ std variant> is one of 98, 11, or 14
@@ -62,3 +79,7 @@ Uploading can be done using
 ```
 conan upload  <package name>/<package version>@<user name>/<channel> --all -r=<remote name>
 ```
+
+# Problems
+
+If you are going to build the packages under Linux using gcc you might run into linker issues. You can try to fix this by setting a the C++11 libstdc++. This can be done by adding `-s compiler.libcxx=libstdc++11` to the package build calls.
