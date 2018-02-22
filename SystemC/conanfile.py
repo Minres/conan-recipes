@@ -1,7 +1,7 @@
 from conans import ConanFile, CMake
 
 
-class SeasocksConan(ConanFile):
+class SystemCConan(ConanFile):
     name = "SystemC"
     version = "2.3.2"
     license = "Apache 2.0 License"
@@ -11,24 +11,28 @@ class SeasocksConan(ConanFile):
     options = {"shared": [True, False], "stdcxx":[98,11,14]}
     default_options = "shared=True","stdcxx=98"
     generators = "cmake"
+    source_subfolder = "systemc-2.3.2"
     exports_sources = "systemc-2.3.2/*"
 
 
-#    def build_id(self):
-#        self.info_build.settings.build_type = "Any"
-
-#    def source(self):
-#        self.run("git clone https://github.com/Minres/SystemCLanguage.git")
-#        self.run("cd SystemCLanguage && git checkout master")
-
     def build(self):
         cmake = CMake(self, parallel=True)
-        cmake.configure(source_dir="%s/systemc-2.3.2" % self.source_folder)
-        shared = "-DBUILD_SHARED_LIBS=ON" if self.options.shared else "-DBUILD_SHARED_LIBS=OFF"
-        self.run('cmake systemc-2.3.2 %s %s -DCMAKE_CXX_STANDARD=%s' % (cmake.command_line, shared, self.options.stdcxx))
-        # self.run("cmake --build . %s" % cmake.build_config)
-        self.run("cmake --build . --target install %s" % cmake.build_config)
+        cmake.configure(
+                source_folder=self.source_subfolder,
+                args=[
+                    "-DBUILD_SHARED_LIBS=ON" if self.options.shared else "-DBUILD_SHARED_LIBS=OFF",
+                    '-DCMAKE_CXX_STANDARD=%s' % self.options.stdcxx
+                    ]
+                )
+        cmake.build()
+        cmake.install()
+
+    def package(self):
+        # Headers
+        #self.copy(pattern="*.h", dst="include", src="package/include", keep_path=True)
+        # Libs
+        #self.copy(pattern="*", dst="lib", src="package/lib", keep_path=False)
 
     def package_info(self):
-        self.cpp_info.libs = ["systemc"]
+        self.cpp_info.libs = ["systemc", "pthread"]
 

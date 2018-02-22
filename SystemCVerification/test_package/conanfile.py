@@ -1,18 +1,28 @@
 from conans import ConanFile, CMake
 import os
+import pprint
 
 class SystemcverificationTestConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
+    options = {"stdcxx":[98,11,14]}
+    default_options = "stdcxx=98"
     generators = "cmake"
+    requires = "SystemC/2.3.2@minres/stable"
+
+    def configure(self):
+        self.options["SystemCVerification"].stdcxx = self.options.stdcxx
+        if self.settings.compiler == 'gcc' and self.settings.compiler.version > 5:
+            self.output.info("Forcing use of libstdc++11")
+            self.settings.compiler.libcxx='libstdc++11'
 
     def build(self):
-        cxxstd = self.options["SystemC"].stdcxx
         cmake = CMake(self)
         # Current dir is "test_package/build/<build_id>" and CMakeLists.txt is in "test_package"
-        cmake.configure(source_dir=self.conanfile_directory, build_dir="./")
-        #cmake.build()
-        self.run('cmake %s %s -DCMAKE_CXX_STANDARD=%s' % (self.conanfile_directory, cmake.command_line, cxxstd))
-        self.run("cmake --build . %s" % cmake.build_config)
+        cmake.configure(
+                args=[
+                    '-DCMAKE_CXX_STANDARD=%s' % self.options.stdcxx
+                ])
+        cmake.build()
 
     def imports(self):
         self.copy("*.dll", dst="bin", src="bin")

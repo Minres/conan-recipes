@@ -3,16 +3,19 @@ import os
 
 class SystemcTestConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
+    options = {"stdcxx":[98,11,14], "shared":[True,False]}
+    default_options = "stdcxx=98","shared=True"
     generators = "cmake"
 
+    def configure(self):
+        self.options["SystemC"].stdcxx = self.options.stdcxx
+        self.options["SystemC"].shared = self.options.shared
+        
     def build(self):
-        cxxstd = self.options["SystemC"].stdcxx
         cmake = CMake(self)
-        # Current dir is "test_package/build/<build_id>" and CMakeLists.txt is in "test_package"
-        cmake.configure(source_dir=self.conanfile_directory, build_dir="./")
-        #cmake.build()
-        self.run('cmake %s %s -DCMAKE_CXX_STANDARD=%s' % (self.conanfile_directory, cmake.command_line, cxxstd))
-        self.run("cmake --build . %s" % cmake.build_config)
+        cmake.definitions["CMAKE_CXX_STANDARD"] = self.options["SystemC"].stdcxx
+        cmake.configure()
+        cmake.build()
 
     def imports(self):
         self.copy("*.dll", dst="bin", src="bin")

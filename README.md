@@ -13,13 +13,13 @@ to build all variations run
 
 ```
 cd Seasocks
-CONAN_USER=<username> CONAN_CHANNEL=<channel name> python build.py
+CONAN_USERNAME=<username> CONAN_CHANNEL=<channel name> python build.py
 ```
 
 to build a specific variant run the following commands:
 
 ```
-conan test_package Seasocks/1.3.2@<username>/<channel name>  -s build_type=<build type> -s compiler.libcxx=<libstdc++ variant>
+conan create . Seasocks/1.3.2@<username>/<channel name>  -s build_type=<build type> -s compiler.libcxx=<libstdc++ variant>
 ```
 
 ## SystemC
@@ -28,13 +28,13 @@ download the SystemC distribution from http://www.accellera.org/downloads/standa
 
 ```
 cd SystemC
-CONAN_USER=<usernam> CONAN_CHANNEL=<channel name> python build.py
+CONAN_USERNAME=<username> CONAN_CHANNEL=<channel name> python build.py
 ```
 
 to build a specific variant run the following command
 
 ```
-conan test_package SystemC/2.3.2@minres/<channel name>  -o SystemC:stdcxx=<c++ std variant> -s build_type=<build type>
+conan create . SystemC/2.3.2@minres/<channel name>  -o stdcxx=<c++ std variant> -s build_type=<build type>
 ```
 
 where <c++ std variant> is one of 98, 11, or 14
@@ -45,13 +45,13 @@ download the SystemC distribution from http://www.accellera.org/downloads/standa
 
 ```
 cd SystemCVerification
-CONAN_USER=<usernam> CONAN_CHANNEL=<channel name> python build.py
+CONAN_USERNAME=<username> CONAN_CHANNEL=<channel name> python build.py
 ```
 
 to build a specific variant run the following command
 
 ```
-conan test_package SystemCVerification/2.0.0.a@minres/<channel name>  -o SystemC:stdcxx=<c++ std variant> -s build_type=<build type>
+conan create . SystemCVerification/2.0.1a@minres/<channel name>  -o stdcxx=<c++ std variant> -s build_type=<build type>
 ```
 
 where <c++ std variant> is one of 98, 11, or 14

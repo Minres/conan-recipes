@@ -3,13 +3,17 @@ import os
 
 class SeasocksTestConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
+    options = {"shared": [True, False]}
+    default_options = "shared=True"
     generators = "cmake"
     build_requires = "Catch/1.9.2@uilianries/stable"
 
+    def configure(self):
+        self.options["Seasocks"].shared = self.options.shared
+    
     def build(self):
         cmake = CMake(self)
-        # Current dir is "test_package/build/<build_id>" and CMakeLists.txt is in "test_package"
-        cmake.configure(source_dir=self.conanfile_directory, build_dir="./")
+        cmake.configure()
         cmake.build()
 
     def imports(self):
