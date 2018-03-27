@@ -28,9 +28,8 @@ class SystemC_CCIConan(ConanFile):
             env_build.cxx_flags = "-std=gnu++98"
         env_build.fpic = True
         with tools.chdir(os.path.join(self.source_subfolder, 'src')):
-            env_build.make(args=[
-                    'SYSTEMC_HOME=%s' % self.deps_cpp_info["SystemC"].rootpath
-                ])
+            env_build.make(args=[ 'clean', 'SYSTEMC_HOME=%s' % self.deps_cpp_info["SystemC"].rootpath])
+            env_build.make(args=[ 'AT_CXX=', 'SYSTEMC_HOME=%s' % self.deps_cpp_info["SystemC"].rootpath])
 
     def package(self):
         # Headers
@@ -39,11 +38,6 @@ class SystemC_CCIConan(ConanFile):
         self.copy(pattern="*.h", dst="include", src=inc_dir, keep_path=True)
         # Libs
         lib_dir = os.path.join(self.source_subfolder, 'lib')
-        self.copy(pattern="*", dst="lib", src=lib_dir, keep_path=False)
-        self.copy(pattern="*", dst="lib", src=lib_dir, keep_path=False)
-        self.copy(pattern="*", dst="lib", src=lib_dir, keep_path=False)
-        self.copy(pattern="*", dst="lib", src=lib_dir, keep_path=False)
-        self.copy(pattern="*", dst="lib", src=lib_dir, keep_path=False)
         self.copy(pattern="*", dst="lib", src=lib_dir, keep_path=False)
 
     def package_info(self):

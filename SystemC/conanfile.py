@@ -27,7 +27,7 @@ class SystemCConan(ConanFile):
         cmake.build()
         cmake.install()
 
-    def package(self):
+    #def package(self):
         # Headers
         #self.copy(pattern="*.h", dst="include", src="package/include", keep_path=True)
         # Libs
