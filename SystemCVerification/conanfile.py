@@ -28,6 +28,7 @@ class SystemcverificationConan(ConanFile):
             env_build.cxx_flags = "-std=gnu++98"
         env_build.fpic = True
         tools.mkdir("build")
+        env_build.libs.remove('systemc')
         with tools.chdir("build"):
             env_build.configure(
                 configure_dir=os.path.join(self.source_folder, self.source_subfolder),    
