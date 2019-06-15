@@ -6,7 +6,7 @@ class SeasocksTestConan(ConanFile):
     options = {"shared": [True, False]}
     default_options = "shared=True"
     generators = "cmake"
-    build_requires = "Catch/1.9.2@uilianries/stable"
+    build_requires = "Catch/1.9.6@uilianries/stable"
 
     def configure(self):
         self.options["Seasocks"].shared = self.options.shared

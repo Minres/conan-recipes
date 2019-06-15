@@ -4,16 +4,16 @@ import pprint
 
 class SystemcverificationTestConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
-    options = {"stdcxx":[98,11,14]}
-    default_options = "stdcxx=98"
+    options = {"shared": [True, False], "stdcxx":[98,11,14]}
+    default_options = "shared=True","stdcxx=98"
     generators = "cmake"
-    requires = "SystemC/2.3.2@minres/stable"
+    requires = "SystemC/2.3.3@minres/stable"
 
     def configure(self):
         self.options["SystemCVerification"].stdcxx = self.options.stdcxx
-        if self.settings.compiler == 'gcc' and self.settings.compiler.version > 5:
-            self.output.info("Forcing use of libstdc++11")
-            self.settings.compiler.libcxx='libstdc++11'
+        #if self.settings.compiler == 'gcc' and self.settings.compiler.version > 5:
+            #self.output.info("Forcing use of libstdc++11")
+            #self.settings.compiler.libcxx='libstdc++11'
 
     def build(self):
         cmake = CMake(self)

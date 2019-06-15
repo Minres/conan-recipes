@@ -12,7 +12,7 @@ class SeasocksConan(ConanFile):
     default_options = "shared=True"
     generators = "cmake"
     exports_sources = "src/main/c/*"
-    reuires = "zlib/1.2.11@conan/stable"
+    #requires = "zlib/1.2.11@conan/stable"
 
 
     def source(self):
@@ -23,10 +23,11 @@ class SeasocksConan(ConanFile):
         tools.replace_in_file("seasocks/CMakeLists.txt", "project(Seasocks VERSION 1.3.2)", '''project(Seasocks VERSION 1.3.2)
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()''')
+        tools.replace_in_file("seasocks/src/CMakeLists.txt", 'add_subdirectory("app/c")', '#add_subdirectory("app/c")')
 
     def build(self):
         cmake = CMake(self, parallel=True)
-        cmake.configure(source_folder="seasocks")
+        cmake.configure(source_folder="seasocks", args=["-DCMAKE_INSTALL_LIBDIR=lib"])
         cmake.build()
         cmake.install()
 

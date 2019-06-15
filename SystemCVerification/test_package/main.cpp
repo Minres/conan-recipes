@@ -22,8 +22,8 @@
 #include "scv.h"
 
 int sc_main(int argc, char** argv) {
-  scv_smart_ptr<int>    addr("addr");
-  scv_random::set_global_seed(100);
+//  scv_smart_ptr<int>    addr("addr");
+//  scv_random::set_global_seed(100);
   cout << "Success!" << endl;
   return 0;
 }

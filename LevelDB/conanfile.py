@@ -4,7 +4,7 @@ import os
 
 class LevelDBConan(ConanFile):
     name = "LevelDB"
-    version = "1.20"
+    version = "1.21"
     license = "https://github.com/google/leveldb/blob/master/LICENSE"
     url = "https://github.com/Minres/conan-recipes/LevelDB"
     use_master = True

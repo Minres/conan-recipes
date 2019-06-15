@@ -8,12 +8,12 @@ class SystemcverificationConan(ConanFile):
     url = "https://github.com/Minres/conan-recipes/blob/master/SystemCVerification"
     description = "The SystemC Verification (SCV) library provides a common set of APIs that are used as a basis to verification activities with SystemC"
     settings = "os", "compiler", "build_type", "arch"
-    options = {"stdcxx":[98,11,14]}
-    default_options = "stdcxx=98"
+    options = {"shared": [True, False], "stdcxx":[98,11,14]}
+    default_options = "shared=True","stdcxx=98"
     generators = "gcc"
     source_subfolder = "scv-2.0.1"
     exports_sources = "scv-2.0.1/*"
-    requires = "SystemC/2.3.2@minres/stable"
+    requires = "SystemC/2.3.3@minres/stable"
 
     def configure(self):
         self.options["SystemC"].stdcxx = self.options.stdcxx
@@ -21,13 +21,23 @@ class SystemcverificationConan(ConanFile):
     def build(self):
         env_build = AutoToolsBuildEnvironment(self)
         if self.options.stdcxx == "14":
-            env_build.cxx_flags = "-std=gnu++14"
+            if self.settings.compiler.libcxx == 'libstdc++11':
+                env_build.cxx_flags = "-std=gnu++14 -D_GLIBCXX_USE_CXX11_ABI=1"
+            else:
+                env_build.cxx_flags = "-std=gnu++14 -D_GLIBCXX_USE_CXX11_ABI=0"
         elif self.options.stdcxx == "11":
-            env_build.cxx_flags = "-std=gnu++11"
+            if self.settings.compiler.libcxx == 'libstdc++11':
+                env_build.cxx_flags = "-std=gnu++11 -D_GLIBCXX_USE_CXX11_ABI=1"
+            else:
+                env_build.cxx_flags = "-std=gnu++11 -D_GLIBCXX_USE_CXX11_ABI=0"
         elif self.options.stdcxx == "98":
             env_build.cxx_flags = "-std=gnu++98"
         env_build.fpic = True
         tools.mkdir("build")
+        # make sure timestamps are correct to avoid invocation of autoconf tools
+        tools.touch("%s/aclocal.m4"  % os.path.join(self.source_folder, self.source_subfolder))
+        tools.touch("%s/Makefile.in" % os.path.join(self.source_folder, self.source_subfolder))
+        tools.touch("%s/configure"   % os.path.join(self.source_folder, self.source_subfolder))
         env_build.libs.remove('systemc')
         with tools.chdir("build"):
             env_build.configure(
@@ -35,8 +45,9 @@ class SystemcverificationConan(ConanFile):
                 args=[
                     '--prefix=%s' % os.path.join(self.source_folder, 'install'),
                     '--with-systemc=%s' % self.deps_cpp_info["SystemC"].rootpath,
-                    '--disable-debug',
-                    '--disable-opt'
+                    '--enable-static=no --enable-shared=yes' if self.options.shared else '--enable-static=yes --enable-shared=no'
+                    #'--disable-debug',
+                    #'--disable-opt'
                     ]
                 )
             env_build.make()
