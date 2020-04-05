@@ -17,8 +17,8 @@ class RocksDBConan(ConanFile):
     source_tgz = "https://github.com/facebook/rocksdb/archive/v%s.tar.gz" % version
     
     requires = (
-        "zlib/1.2.11",
-        "bzip2/1.0.8",
+        "zlib/1.2.11@conan/stable",
+        "bzip2/1.0.8@conan/stable",
         "lz4/1.8.0@bincrafters/stable",
         "gflags/2.2.2"
         # TODO snappy, zstandard
