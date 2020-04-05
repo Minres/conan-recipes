@@ -13,7 +13,7 @@ to build all variations run
 
 ```
 cd Seasocks
-CONAN_USERNAME=<username> CONAN_CHANNEL=<channel name> python build.py
+CONAN_USERNAME=<username> CONAN_CHANNEL=<channel name> python3 build.py
 ```
 
 to build a specific variant run the following commands:
@@ -28,7 +28,7 @@ download the SystemC distribution from http://www.accellera.org/downloads/standa
 
 ```
 cd SystemC
-CONAN_USERNAME=<username> CONAN_CHANNEL=<channel name> python build.py
+python3 build.py
 ```
 
 to build a specific variant run the following command
@@ -45,7 +45,7 @@ download the SystemC distribution from http://www.accellera.org/downloads/standa
 
 ```
 cd SystemCVerification
-CONAN_USERNAME=<username> CONAN_CHANNEL=<channel name> python build.py
+python3 build.py
 ```
 
 to build a specific variant run the following command
@@ -62,7 +62,7 @@ download the SystemC CCI distribution from http://www.accellera.org/downloads/st
 
 ```
 cd SystemC-CCI
-CONAN_USERNAME=<username> CONAN_CHANNEL=<channel name> python build.py
+python3 build.py
 ```
 
 to build a specific variant run the following command
