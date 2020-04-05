@@ -1,7 +1,8 @@
+#!/usr/bin/env python3
 from conan.packager import ConanMultiPackager
 
 if __name__ == "__main__":
-    builder = ConanMultiPackager()
+    builder = ConanMultiPackager(username="minres")
     types = ['Debug','Release']
     cxxstds = ['98', '11','14']
     libstdcxx = ['libstdc++', 'libstdc++11']

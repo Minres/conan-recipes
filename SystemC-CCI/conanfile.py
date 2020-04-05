@@ -22,6 +22,7 @@ class SystemC_CCIConan(ConanFile):
         cmake.configure(
                 source_folder=self.source_subfolder,
                 args=[
+                    '-DCMAKE_CXX_FLAGS:="-D_GLIBCXX_USE_CXX11_ABI=%d"' % (0 if self.settings.compiler.libcxx == 'libstdc++' else 1),
                     '-DBUILD_SHARED_LIBS=ON' if self.options.shared else '-DBUILD_SHARED_LIBS=OFF',
                     '-DCMAKE_INSTALL_LIBDIR=lib', 
                     '-DCMAKE_CXX_STANDARD=%s' % self.options.stdcxx,

@@ -21,10 +21,6 @@ class RocksDBConan(ConanFile):
         "bzip2/1.0.8",
         "lz4/1.8.0@bincrafters/stable",
         "gflags/2.2.2"
-        #"zlib/1.2.11@conan/stable",
-        #"bzip2/1.0.8@conan/stable",
-        #"lz4/1.8.0@bincrafters/stable",
-        #"gflags/2.2.2@bincrafters/stable"
         # TODO snappy, zstandard
     )
 

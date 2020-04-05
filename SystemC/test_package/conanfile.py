@@ -4,7 +4,7 @@ import os
 class SystemcTestConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     options = {"stdcxx":[98,11,14], "shared":[True,False]}
-    default_options = "stdcxx=98","shared=True"
+    default_options = "stdcxx=11","shared=True"
     generators = "cmake"
 
     def configure(self):
@@ -14,6 +14,7 @@ class SystemcTestConan(ConanFile):
     def build(self):
         cmake = CMake(self)
         cmake.definitions["CMAKE_CXX_STANDARD"] = self.options["SystemC"].stdcxx
+        cmake.definitions["CMAKE_CXX_FLAGS"]="-D_GLIBCXX_USE_CXX11_ABI=%d" %(0 if self.settings.compiler.libcxx == 'libstdc++' else 1)
         cmake.configure()
         cmake.build()
 
