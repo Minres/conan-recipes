@@ -1,5 +1,6 @@
 from conans import ConanFile, AutoToolsBuildEnvironment, tools
 import os
+import shutil
 
 class TccConan(ConanFile):
     name = "tcc"
@@ -19,14 +20,15 @@ class TccConan(ConanFile):
     exports_sources = "tcc-%s/*" % version
 
     def source(self):
-        if self.revsion:
+        if self.revision:
+            self.output.info("Cloning from %s" % self.git_repo)
             git = tools.Git(folder=self.sub_folder)
-            if not os.path.exists(self.sub_folder):
-                git.clone(self.git_repo)
-                git.pull()
-                git.checkout(self.revision)
+            if os.path.exists(self.sub_folder):
+                shutil.rmtree(self.sub_folder) 
+            git.clone(self.git_repo)
+            git.checkout(self.revision)
         else:
-            self.output.info("Downloading %s" %self.source_tar)
+            self.output.info("Downloading %s" % self.source_tar)
             tools.download(self.source_tar, "tcc.tar.bz2")
             tools.unzip("tcc.tar.bz2")
             os.remove("tcc.tar.bz2")
