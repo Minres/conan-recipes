@@ -1,9 +1,11 @@
 from conans import ConanFile, AutoToolsBuildEnvironment, tools
 import os
+import shutil
 
 class TccConan(ConanFile):
     name = "tcc"
-    version = "0.9.27"
+    revision = "62c30a4a"
+    version = "0.9.27+%s" % revision if revision else "0.9.27"
     license = "GNU Lesser General Public License"
     author = "Eyck Jentzsch <eyck@minres.com>"
     url = "https://github.com/Minres/conan-recipes/tree/master/TCC"
@@ -11,17 +13,25 @@ class TccConan(ConanFile):
     topics = ("compiler", "c")
     settings = "os", "compiler", "build_type", "arch"
     default_options = {}
-
     source_tar = "http://download.savannah.gnu.org/releases/tinycc/tcc-%s.tar.bz2" % version
+    git_repo = "git://repo.or.cz/tinycc.git"
     #generators = "cmake"
     sub_folder = "tcc-%s" % version
     exports_sources = "tcc-%s/*" % version
 
     def source(self):
-        self.output.info("Downloading %s" %self.source_tar)
-        tools.download(self.source_tar, "tcc.tar.bz2")
-        tools.unzip("tcc.tar.bz2")
-        os.remove("tcc.tar.bz2")
+        if self.revision:
+            self.output.info("Cloning from %s" % self.git_repo)
+            git = tools.Git(folder=self.sub_folder)
+            if os.path.exists(self.sub_folder):
+                shutil.rmtree(self.sub_folder) 
+            git.clone(self.git_repo)
+            git.checkout(self.revision)
+        else:
+            self.output.info("Downloading %s" % self.source_tar)
+            tools.download(self.source_tar, "tcc.tar.bz2")
+            tools.unzip("tcc.tar.bz2")
+            os.remove("tcc.tar.bz2")
 
     def configure(self):
         del self.settings.compiler.libcxx
